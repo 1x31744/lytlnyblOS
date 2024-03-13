@@ -2,7 +2,7 @@ start:
     mov ax, cs
     mov ds, ax
 
-    mov si hello_string
+    mov si, hello_string
     call print_string
 
     jmp $
