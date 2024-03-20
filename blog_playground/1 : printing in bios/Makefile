@@ -1,0 +1,20 @@
+# Makefile for assembling bootloader code and creating disk image
+
+# Compiler
+NASM := nasm
+
+# Compiler flags
+NASMFLAGS := -f bin
+
+# Source files
+SRC := print.asm
+
+
+build: $(SRC)
+	$(NASM) $(NASMFLAGS) -o print.o $(SRC)
+	dd if=print.o of=print.img
+	qemu-system-x86_64 -s print.img
+	rm -f print.o
+
+clean:
+	rm -f *.o *.img
