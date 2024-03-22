@@ -9,7 +9,6 @@ NASMFLAGS := -f bin
 # Source files
 SRC := print.asm
 
-
 build: $(SRC)
 	$(NASM) $(NASMFLAGS) -o print.o $(SRC)
 	dd if=print.o of=print.img
