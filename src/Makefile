@@ -4,6 +4,7 @@ KERNEL_FILE = kernel/basic_kernel.asm
 build: $(BOOT_FILE) $(KERNEL_FILE)
 	nasm -f bin $(BOOT_FILE) -o bootstrap.o
 	nasm -f bin $(KERNEL_FILE) -o kernel.o
+	nasm -f elf32 -g -F dwarf $(KERNEL_FILE) -o kernel.debug
 	dd if=bootstrap.o of=kernel.img
 	dd seek=1 conv=sync if=kernel.o of=kernel.img bs=512
 	qemu-system-x86_64 -s -S kernel.img

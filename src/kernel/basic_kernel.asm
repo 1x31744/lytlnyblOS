@@ -1,4 +1,5 @@
 ; no org code starts at 0x0900 though
+[bits 16]
 start:
     mov ax, cs
     mov ds, ax
@@ -35,18 +36,20 @@ enter_protected:
     ; PM code segment descriptor)
     ; to load CS with proper PM32 descriptor)
 
-    jmp dword 08h:p_mode_main
-    jmp enter_protected
 
+    
+    jmp 08h:p_mode_main
+    jmp enter_protected
 [bits 32]
 p_mode_main:
+    jmp p_mode_main
     mov ax, 10h
     mov ds, ax
     mov es, ax
     mov fs, ax
     mov gs, ax
     mov ss, ax
-    mov esp, 0x90000
+    mov esp, 0x9000
     ;mov dword [0xB8000], 0x07410741
 hang:
     jmp hang
@@ -54,25 +57,24 @@ hang:
 hello_string db 'Hello World!, i am lytlnyblOS, running in real mode', 0
 
 gdt:
-
 gdt_null:
     dq 0
 gdt_code:
-    dw 0FFFFh
-    dw 0
-    db 0
-    db 10011010b ;
-    db 11001111b
-    db 0
+    dw 0xFFFF ; limit
+    dw 0x0000 ; base_low
+    db 0x00 ;base_middle
+    db 0x9A ;access
+    db 0xCF ;flags + limit high 4 bits
+    db 0x00 ;base_high
 gdt_data:
-    dw 0FFFFh
-    dw 0
-    db 0
-    db 10010010b
-    db 11001111b
-    db 0
+    dw 0xFFFF
+    dw 0x0000
+    db 0x00
+    db 0x92
+    db 0xCF
+    db 0x00
 gdt_end:
 gdtr:
-    dw gdt_end - gdt
+    dw 23 ; set manually for testing
     dd gdt
 
