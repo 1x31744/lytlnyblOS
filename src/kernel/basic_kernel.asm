@@ -1,3 +1,8 @@
+;global start
+;global print_string
+;global enter_protected
+;global p_mode_main
+
 ; no org code starts at 0x0900 though
 [bits 16]
 start:
@@ -27,7 +32,7 @@ done:
 
 enter_protected:
     cli ;disable interrupts
-    lgdt [gdtr] ; load GDT registor with start address of GDT
+    lgdt [gdtr - start] ; load GDT registor with start address of GDT
     mov eax, cr0
     or eax, 1 ;set protection enable bit in control register 0 (cr0)
     mov cr0, eax
@@ -37,8 +42,8 @@ enter_protected:
     ; to load CS with proper PM32 descriptor)
 
 
-    
-    jmp 08h:p_mode_main
+    CODE_SEG equ gdt_code - gdt_start
+    jmp CODE_SEG:p_mode_main
     jmp enter_protected
 [bits 32]
 p_mode_main:
@@ -56,7 +61,7 @@ hang:
 
 hello_string db 'Hello World!, i am lytlnyblOS, running in real mode', 0
 
-gdt:
+gdt_start:
 gdt_null:
     dq 0
 gdt_code:
@@ -75,6 +80,6 @@ gdt_data:
     db 0x00
 gdt_end:
 gdtr:
-    dw 23 ; set manually for testing
-    dd gdt
+    dw gdt_end - gdt_start - 1 ; set manually for testing
+    dd gdt_start
 
