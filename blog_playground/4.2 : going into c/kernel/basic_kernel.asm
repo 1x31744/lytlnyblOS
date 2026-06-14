@@ -54,9 +54,6 @@ p_mode_main:
     mov ss, ax
     mov esp, 0x9000
 
-    mov byte [0xB8000], 'P'
-    mov byte [0xB8001], 0x02
-
     ; go into C
 
     extern kernel_main
