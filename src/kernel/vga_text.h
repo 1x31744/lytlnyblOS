@@ -4,7 +4,7 @@
 #include <stddef.h>
 #include <stdint.h>
 
-typedef enum vga_color {
+typedef enum {
     VGA_COLOR_BLACK = 0,
     VGA_COLOR_BLUE,
     VGA_COLOR_GREEN,
@@ -21,74 +21,79 @@ typedef enum vga_color {
     VGA_COLOR_LIGHT_MAGENTA,
     VGA_COLOR_LIGHT_BROWN,
     VGA_COLOR_WHITE
-};
+} vga_color;
 
-struct vga_text {
+typedef struct {
     size_t row;
     size_t column;
+
+    size_t width;
+    size_t height;
 
     uint8_t fcolor;
     uint8_t bcolor;
 
     uint16_t* buffer;
-};
+} vga_text;
 
 // init
-void vga_text_init(struct vga_text* vga);
+void vga_text_init(vga_text* terminal);
 
 //screen ops
 //
-void vga_text_clear(struct vga_text* vga);
+void vga_text_clear( vga_text* terminal);
 
 /* cursor ops */
 void vga_text_set_cursor(
-    struct vga_text* vga,
+     vga_text* vga,
     size_t row,
     size_t column
-};
+);
 
 /* Color ops */
 void vga_text_set_color(
-    struct vga_text* vga,
+     vga_text* vga,
     vga_color foreground,
     vga_color background
 );
 
 /* char out */
 void vga_text_putchar(
-    struct vga_text* vga,
+     vga_text* vga,
     char c
 );
 
 /* string out */
 void vga_text_write(
-    struct vga_text* vga,
+     vga_text* vga,
     const char* string
 );
 
 void vga_text_writeline(
-    struct vga_text* vga,
+     vga_text* vga,
     const char* string
 );
 
 /* num out */
 void vga_text_write_dec(
-    struct vga_text* vga,
+     vga_text* vga,
     uint32_t value 
 );
 
 void vga_text_write_hex(
-    struct vga_text* vga,
+     vga_text* vga,
     uint32_t value
 );
 
 /* low level writing */
 
 void vga_text_put_entry_at(
-    struct vga_text* vga,
+    vga_text* vga,
     char character,
     uint8_t fcolor,
     uint8_t bcolor,
     size_t row,
     size_t column
 );
+
+#endif
