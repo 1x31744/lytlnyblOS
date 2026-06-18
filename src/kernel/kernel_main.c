@@ -11,17 +11,7 @@ void kernel_main(void)
     vga[1] = 0x02;
 
     vga_text_init(&terminal);
-    vga_text_putchar(&terminal, 'A');
-    vga_text_writeline(&terminal, "hello does this write line work");
-    vga_text_writeline(&terminal, "okay testingggg...?");
-    vga_text_write_dec(&terminal, 1234);
-    vga_text_write_hex(&terminal, 0xFA1F54B1);
-    vga_text_put_entry_at(
-        &terminal,
-        'a',
-        VGA_COLOR_GREEN,
-        VGA_COLOR_BLUE,
-        20,
-        30);
+    vga_text_writeline(&terminal, "Welcome to the lytlnybl kernel in real mode");
+    vga_text_writeline(&terminal, "Interrupts coming soon...");
     for (;;);
 }
