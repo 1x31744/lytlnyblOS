@@ -1,4 +1,5 @@
 #include "vga_text.h"
+#include "interrupts.h"
 
 vga_text terminal;
 
@@ -13,5 +14,17 @@ void kernel_main(void)
     vga_text_init(&terminal);
     vga_text_writeline(&terminal, "Welcome to the lytlnybl kernel in real mode");
     vga_text_writeline(&terminal, "Interrupts coming soon...");
+
+    idt_init();
+    
+    asm volatile (
+        "xor %%edx, %%edx\n"
+        "mov $10, %%eax\n"
+        "div %%edx"
+        :
+        :
+        : "eax", "edx"
+    );
+
     for (;;);
 }
