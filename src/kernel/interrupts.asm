@@ -144,7 +144,6 @@ irq_common_stub:
     add esp, 4
 
     pop eax
-    mov ds, ax
 
     popa
 
