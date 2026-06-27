@@ -1,5 +1,6 @@
 #include "interrupts.h"
 #include "vga_text.h"
+#include "timer.h"
 
 extern vga_text terminal;
 
@@ -74,7 +75,14 @@ void isr_handler(registers_t* regs) {
 }
 
 void irq_handler(registers_t* regs) {
-    vga_text_writeline(&terminal, "IRQ");
+    switch (regs->interrupt_number - 32) {
+        case 0:
+            timer_handler();
+        case 1:
+            break;
+        case 2:
+            break;
+    }
     pic_send_eoi(regs->interrupt_number - 32);
 }
 
