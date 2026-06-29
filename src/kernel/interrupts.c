@@ -78,6 +78,7 @@ void irq_handler(registers_t* regs) {
     switch (regs->interrupt_number - 32) {
         case 0:
             timer_handler();
+            break;
         case 1:
             break;
         case 2:
@@ -93,7 +94,6 @@ void idt_init(void) {
 
     idtr.base = (uint32_t)idt;
 
-    idt_set_gate(0, (uint32_t)isr0, 0x08, 0x8E);
     idt_set_gate(0,  (uint32_t)isr0,  0x08, 0x8E);
     idt_set_gate(1,  (uint32_t)isr1,  0x08, 0x8E);
     idt_set_gate(2,  (uint32_t)isr2,  0x08, 0x8E);
